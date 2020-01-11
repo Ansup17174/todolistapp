@@ -1,0 +1,9 @@
+{% extends 'todolist/base.html' %}
+{% block content %}
+
+<div class="container" id="content">
+        <h3 class="blue-grey-text text-lighten-5">
+        <a href="{% url 'login' %}">Log in</a> or
+        <a href="{% url 'todolist:register' %}">sign up</a> in order to see content</h3>
+</div>
+{% endblock %}

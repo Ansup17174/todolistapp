@@ -1,0 +1,47 @@
+{% extends 'todolist/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container">
+    {% if user_todo_lists %}
+    {% for todo_list in user_todo_lists %}
+    <fieldset class="center-align" style="border-radius: 20px;">
+        <legend><h4 class="blue-grey-text text-lighten-5">{{todo_list.list_title}}
+            <a class="btn-floating btn-small waves-effect waves-light amber darken-1" href="{% url 'todolist:edit_list' todo_list.pk %}">
+                <i class="material-icons">border_color</i></a>
+              <a class="btn-floating btn-small waves-effect waves-light red" href="{% url 'todolist:delete_list_preview' todo_list.pk %}">
+                <i class="material-icons">clear</i></a></h4></legend>
+        <div class="container">
+            {% if todo_list.todo_set.all %}
+            <ul>
+            {% for todo in todo_list.todo_set.all %}
+            <li>
+                <h5 class="green-text accent-4-text left-align"><span class="right-align"><a href="{% url 'todolist:edit_todo' todo.pk %}">
+                    <i class="material-icons amber-text text-darken-1 ">border_color</i>
+                </span></a>
+                <span class="right-align"><a href="{% url 'todolist:delete_todo' todo.pk %}">
+                    <i class="material-icons red-text text-darken-1 ">delete_forever</i>
+                &nbsp;&nbsp;
+                </span></a><i class="material-icons">bookmark</i>{{todo.todo_text}}
+                </h5>
+            </li>
+            {% endfor %}
+        </ul>
+            {% else %}
+            <h5 class="blue-grey-text text-lighten-5 center-align">No elements to do left</h5>
+            {% endif %}
+            <br/>
+            <a href="{% url 'todolist:new_todo' todo_list.pk %}" class="btn-floating btn-small waves-effect waves-light green"><i class="material-icons">add</i></a>
+            <br/><br/>
+        </div>
+    </fieldset>
+    {% endfor %}
+    {% else %}
+    <h3 class="blue-grey-text text-lighten-5 center-align">You have no lists</h3>
+    {% endif %}
+     <br/><br/><br/><br/>
+    <div class="container center-align">
+    <a href="{% url 'todolist:new_list' %}" class="waves-effect waves-light btn-large teal lighten-2">
+            <i class="material-icons left">add_box</i>Add new</a>
+</div>
+  </div>
+{% endblock %}
