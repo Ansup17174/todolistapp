@@ -4,18 +4,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>To-Do List app{</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>To-Do List app</title>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="#263238 blue-grey darken-4">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <div class="navbar-fixed">
-<nav>
-    <div class="nav-wrapper #0091ea light-blue accent-4">
+<nav class="nav-wrapper light-blue accent-4">
     <div class="container">
         <a href="/" class="brand-logo"><i class="material-icons">featured_play_list</i>To-Do List</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <a href="#" class="sidenav-trigger" data-target="mobile-links">
+            <i class="material-icons">menu</i>
+        </a>
+      <ul class="right hide-on-med-and-down">
           {% if user.is_authenticated %}
           <li><a href="{% url 'logout' %}">Log out</a></li>
           {% else %}
@@ -24,10 +26,28 @@
           {% endif %}
       </ul>
     </div>
-    </div>
   </nav>
 </div>
+      <ul class="sidenav black" id="mobile-links">
+          <div class="container">
+          <br/><br/>
+          {% if user.is_authenticated %}
+          <li><h4><a href="{% url 'logout' %}" class="blue-grey-text text-lighten-5 center-align">Log out</a></h4></li>
+          {% else %}
+          <li><h4><a href="{% url 'todolist:register' %}" class="blue-grey-text text-lighten-5 center-align">Register</a></h4></li>
+          <br/><br/>
+          <li><h4><a href="{% url 'login' %}" class="blue-grey-text text-lighten-5 center-align">Log In</a></h4></li>
+          {% endif %}
+          </div>
+          </ul>
 {% block content %}
 {% endblock %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('.sidenav').sidenav();
+    });
+  </script>
 </body>
 </html>

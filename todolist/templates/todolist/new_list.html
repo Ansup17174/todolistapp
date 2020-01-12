@@ -13,5 +13,8 @@
     <i class="material-icons right">send</i>
   </button>
 </form>
+    {% if form.errors %}
+    <span class="blue-grey-text text-lighten-5">{{form.errors}}</span>
+    {% endif %}
 </div>
 {% endblock %}

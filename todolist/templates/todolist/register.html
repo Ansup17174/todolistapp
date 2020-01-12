@@ -14,5 +14,10 @@
     <i class="material-icons right">send</i>
   </button>
 </form>
-</div>
+    {% if errors %}
+    {% for error in errors %}
+    <span class="blue-grey-text text-lighten-5">{{error}}</span>
+    {% endfor %}
+    {% endif %}
+    </div>
 {% endblock %}

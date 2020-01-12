@@ -24,7 +24,8 @@ def Register(request):
             login(request, user)
             return HttpResponseRedirect(reverse('todolist:index'))
         else:
-            return HttpResponseRedirect(reverse('todolist:register'))
+            errors = list(form.errors.values())
+            return render(request, 'todolist/register.html', {'form': form, 'errors': errors})
     else:
         form = UserCreationForm()
         return render(request, 'todolist/register.html', {'form': form})
