@@ -5,7 +5,6 @@ urlpatterns = [
     path('', views.Index, name='index'),
     path('register/', views.Register, name="register"),
     path('delete-todo/<int:pk>/', views.DeleteToDo, name='delete_todo'),
-    path('delete-list-preview/<int:pk>/', views.DeleteListPreview, name='delete_list_preview'),
     path('delete-list/<int:pk>', views.DeleteList, name='delete_list'),
     path('new/', views.NewList, name='new_list'),
     path('new-todo/<int:pk>', views.NewToDo, name='new_todo'),

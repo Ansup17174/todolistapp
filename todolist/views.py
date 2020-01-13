@@ -51,13 +51,6 @@ def DeleteToDo(request, pk):
         return HttpResponse(status=404)
 
 
-def DeleteListPreview(request, pk):
-    todolist = get_object_or_404(TodoList, pk=pk)
-    if request.user == todolist.user:
-        return render(request, 'todolist/list_delete.html', {'pk': pk})
-    else:
-        return HttpResponse(status=404)
-
 def DeleteList(request, pk):
     todolist = get_object_or_404(TodoList, pk=pk)
     if request.user == todolist.user:
