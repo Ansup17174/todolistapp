@@ -11,28 +11,64 @@
               <a class="btn-floating btn-small waves-effect waves-light red" href="{% url 'todolist:delete_list_preview' todo_list.pk %}">
                 <i class="material-icons">clear</i></a></h4></legend>
         <div class="container">
+            <form method="POST">
+                {% csrf_token %}
             {% if todo_list.todo_set.all %}
             <ul>
             {% for todo in todo_list.todo_set.all %}
-            <li>
-                <h5 class="green-text accent-4-text left-align"><span class="right-align"><a href="{% url 'todolist:edit_todo' todo.pk %}">
-                    <i class="material-icons amber-text text-darken-1 ">border_color</i>
-                </span></a>
-                <span class="right-align"><a href="{% url 'todolist:delete_todo' todo.pk %}">
+            {% if todo.is_done %}
+                <li>
+                <h5 class="blue-grey-text text-lighten-5 left-align">
+                    <span class="green-text text-darken-1" style="padding: 5px;">
+                    <i class="material-icons green-text text-darken-1">check</i>
+                        {{todo.todo_text}}
+                </span>
+                <span class="right" style="padding: 5px;"><a href="{% url 'todolist:delete_todo' todo.pk %}">
                     <i class="material-icons red-text text-darken-1 ">delete_forever</i>
-                &nbsp;&nbsp;
-                </span></a><i class="material-icons">bookmark</i>{{todo.todo_text}}
+                </a></span>
+
+                    <span class="right" style="padding: 5px;"><a href="{% url 'todolist:edit_todo' todo.pk %}">
+                    <i class="material-icons amber-text text-darken-1 ">border_color</i>
+                </a></span>
+                    &nbsp;&nbsp;
                 </h5>
             </li>
+                {% else %}
+                <li>
+                <h5 class="blue-grey-text text-lighten-5 left-align">
+                <label>
+                    <input type="checkbox" name="{{todo.pk}}" class="filled-in"/>
+                    <span></span>
+                </label>
+                    <i class="material-icons">bookmark</i>{{todo.todo_text}}
+                <span class="right" style="padding: 5px;"><a href="{% url 'todolist:delete_todo' todo.pk %}">
+                    <i class="material-icons red-text text-darken-1 ">delete_forever</i>
+                </a></span>
+
+                    <span class="right" style="padding: 5px;"><a href="{% url 'todolist:edit_todo' todo.pk %}">
+                    <i class="material-icons amber-text text-darken-1 ">border_color</i>
+                </a></span>
+                    &nbsp;&nbsp;
+                </h5>
+                </li>
+                {% endif %}
             {% endfor %}
         </ul>
+
             {% else %}
             <h5 class="blue-grey-text text-lighten-5 center-align">No elements to do left</h5>
             {% endif %}
-            <br/>
+                {% if todo_list.undone_todos %}
+                <br/>
+                <button class="btn-floating btn-small waves-effect waves-light blue darken-3 left"><i class="material-icons">check</i></button>
+                {% endif %}
+                <br/>
+            </form>
+
+        </div>
+        <br/>
             <a href="{% url 'todolist:new_todo' todo_list.pk %}" class="btn-floating btn-small waves-effect waves-light green"><i class="material-icons">add</i></a>
             <br/><br/>
-        </div>
     </fieldset>
     {% endfor %}
     {% else %}
@@ -42,6 +78,6 @@
     <div class="container center-align">
     <a href="{% url 'todolist:new_list' %}" class="waves-effect waves-light btn-large teal lighten-2">
             <i class="material-icons left">add_box</i>Add new</a>
+    </div>
 </div>
-  </div>
 {% endblock %}

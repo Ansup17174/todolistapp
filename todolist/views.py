@@ -8,8 +8,20 @@ from .models import Todo, TodoList
 def Index(request):
     user = request.user
     if user.is_authenticated:
-        user_todo_lists = user.todolist_set.all()
-        return render(request, 'todolist/list.html', {'user_todo_lists': user_todo_lists})
+        if request.method == 'POST':
+            for pk in list(request.POST.keys())[1:]:
+                todo = get_object_or_404(Todo, pk=pk)
+                todo.is_done = True
+                todo.save()
+            return HttpResponseRedirect(reverse('todolist:index'))
+        else:
+            user_todo_lists = user.todolist_set.all()
+            for todolist in user_todo_lists:
+                for todo in todolist.todo_set.all():
+                    if not todo.is_done:
+                        todolist.undone_todos = True
+                        break
+            return render(request, 'todolist/list.html', {'user_todo_lists': user_todo_lists})
     else:
         return render(request, 'todolist/not_logged.html')
 
@@ -116,5 +128,14 @@ def EditTodo(request, pk):
         else:
             form = NewToDoForm(instance=todo, initial={'todo_text': todo.todo_text})
             return render(request, 'todolist/new_todo.html', {'form': form})
+    else:
+        return HttpResponse(status=404)
+
+def TodoDone(request, pk):
+    todo = get_object_or_404(Todo, pk=pk)
+    if request.user == todo.todo_list.user:
+        todo.is_done = True
+        todo.save()
+        return HttpResponseRedirect(reverse('todolist:index'))
     else:
         return HttpResponse(status=404)

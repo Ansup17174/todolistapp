@@ -12,4 +12,4 @@ class NewToDoForm(forms.ModelForm):
     class Meta:
         model = Todo
         fields = ('todo_text',)
-        exclude = ('todo_list',)
+        exclude = ('todo_list', 'is_done')
