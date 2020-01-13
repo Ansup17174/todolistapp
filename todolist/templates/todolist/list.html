@@ -31,6 +31,7 @@
             </li>
                 <ul id="todo-manage{{forloop.counter}}" class="dropdown-content">
                 <li class="blue-text text-darken-4" style="text-align: center; padding: 5px;"><a href="{% url 'todolist:edit_todo' todo.pk %}">Edit</a></li>
+                    <li class="divider" tabindex="-1"></li>
                 <li class="blue-text text-darken-4" style="text-align: center; padding: 5px;"><a href="{% url 'todolist:delete_todo' todo.pk %}">Delete</a></li>
                 </ul>
                 {% else %}
@@ -49,6 +50,7 @@
                 </li>
                     <ul id="todo-manage{{forloop.counter}}" class="dropdown-content">
                     <li class="blue-text text-darken-4" style="text-align: center; padding: 5px;"><a href="{% url 'todolist:edit_todo' todo.pk %}">Edit</a></li>
+                        <li class="divider" tabindex="-1"></li>
                     <li class="blue-text text-darken-4" style="text-align: center; padding: 5px;"><a href="{% url 'todolist:delete_todo' todo.pk %}">Delete</a></li>
                     </ul>
                 {% endif %}
