@@ -38,7 +38,7 @@
           <br/><br/>
           {% if user.is_authenticated %}
               <li><h4><a href="{% url 'logout' %}" class="blue-grey-text text-lighten-5 center-align">Log out</a></h4></li>
-              <li><a href="{% url 'password_change' %}">Change password</a></li>
+              <li><a href="{% url 'password_change' %}" class="blue-grey-text text-lighten-5 center-align">Change password</a></li>
           {% else %}
           <li><h4><a href="{% url 'todolist:register' %}" class="blue-grey-text text-lighten-5 center-align">Register</a></h4></li>
           <br/><br/>
