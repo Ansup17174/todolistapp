@@ -11,4 +11,5 @@ urlpatterns = [
     path('edit-list/<int:pk>', views.EditList, name='edit_list'),
     path('edit-todo/<int:pk>', views.EditTodo, name='edit_todo'),
     path('todo-done/<int:pk>', views.TodoDone, name='todo_done'),
+    path('password_change/', views.PasswordChange, name='password_change'),
 ]

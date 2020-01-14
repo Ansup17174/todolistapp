@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, HttpResponseRedirect, reverse
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from .forms import NewListForm, NewToDoForm
 from .models import Todo, TodoList
 
@@ -132,3 +132,17 @@ def TodoDone(request, pk):
         return HttpResponseRedirect(reverse('todolist:index'))
     else:
         return HttpResponse(status=404)
+
+def PasswordChange(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return render(request, 'todolist/password_changed.html')
+        else:
+            errors = list(form.errors.values())
+            return render(request, 'todolist/password_change.html', {'form': form, 'errors': errors})
+    else:
+        form = PasswordChangeForm(request.user)
+        return render(request, 'todolist/password_change.html', {'form': form})
