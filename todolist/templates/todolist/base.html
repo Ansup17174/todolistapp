@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="#263238 blue-grey darken-4">
+<!-- Navbar starts here -->
 <div class="navbar-fixed">
 <nav class="nav-wrapper light-blue accent-4">
     <div class="container">
@@ -28,7 +29,10 @@
     </div>
   </nav>
 </div>
-      <ul class="sidenav black" id="mobile-links">
+<!-- Navbar ends here -->
+
+<!-- Sidenav starts here -->
+    <ul class="sidenav black" id="mobile-links">
           <div class="container">
           <br/><br/>
           {% if user.is_authenticated %}
@@ -40,8 +44,10 @@
           {% endif %}
           </div>
           </ul>
+<!-- Sidenav ends here -->
 {% block content %}
 {% endblock %}
+<!-- scripts -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
   <script>
@@ -49,7 +55,7 @@
       $('.sidenav').sidenav();
     });
   </script>
-<script>$('.dropdown-trigger').dropdown({alignment: 'right'});</script>
+<script>$('.dropdown-trigger').dropdown({alignment: 'right', closeOnClick: false});</script>
 
 <script>$(document).ready(function(){
     $('.modal').modal();
