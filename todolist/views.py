@@ -1,7 +1,13 @@
-from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, HttpResponseRedirect, reverse
-from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from .forms import NewListForm, NewToDoForm
+from django.shortcuts import render, HttpResponse, get_object_or_404, HttpResponseRedirect, reverse
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth import authenticate, login, update_session_auth_hash, get_user_model
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.forms import PasswordChangeForm
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from .forms import NewListForm, NewToDoForm, UserCreateForm
 from .models import Todo, TodoList
 
 # Create your views here.
@@ -27,26 +33,49 @@ def Index(request):
 
 def Register(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = UserCreateForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(request, username=username, password=password)
-            login(request, user)
-            return HttpResponseRedirect(reverse('todolist:index'))
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            email_subject = 'Activate Your Account'
+            message = render_to_string('todolist/activate_account.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(email_subject, message, to=[to_email])
+            email.send()
+            return render(request, 'todolist/account_created.html')
         else:
             errors = list(form.errors.values())
             return render(request, 'todolist/register.html', {'form': form, 'errors': errors})
     else:
-        form = UserCreationForm()
+        form = UserCreateForm()
         return render(request, 'todolist/register.html', {'form': form})
+
+def activate_account(request, uidb64, token):
+    try:
+        uid = force_bytes(urlsafe_base64_decode(uidb64))
+        user = get_user_model().objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return render(request, 'todolist/account_activated.html')
+    else:
+        return render(request, 'todolist/invalid.html')
 
 def DeleteToDo(request, pk):
     todo = get_object_or_404(Todo, pk=pk)
     if request.user == todo.todo_list.user:
         todo.delete()
-        return HttpResponseRedirect(reverse('todolist:index'))
+        return HttpResponse(reverse('todolist:index'))
     else:
         return HttpResponse(status=404)
 

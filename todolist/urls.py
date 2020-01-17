@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url
 from . import views
 app_name = 'todolist'
 urlpatterns = [
@@ -12,4 +13,6 @@ urlpatterns = [
     path('edit-todo/<int:pk>', views.EditTodo, name='edit_todo'),
     path('todo-done/<int:pk>', views.TodoDone, name='todo_done'),
     path('password_change/', views.PasswordChange, name='password_change'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate_account, name='activate'),
 ]

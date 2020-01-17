@@ -41,13 +41,14 @@
 
                     <!-- Todo management -->
                  <span class="right" style="padding: 5px;"><a href="#">
-                    <a class="btn-floating btn-small dropdown-trigger right waves-effect waves-light blue-grey-text text-lighten-5" data-target="todo-manage{{forloop.counter}}"><i class="material-icons">more_horiz</i></a>
+                    <a class="btn-floating btn-small dropdown-trigger right waves-effect waves-light blue-grey-text text-lighten-5" data-target="todo-manage{{forloop.counter}}">
+                        <i class="material-icons">more_horiz</i></a>
                 </a></span>
                     &nbsp;&nbsp;
                 </h5>
             </li>
                 <ul id="todo-manage{{forloop.counter}}" class="dropdown-content">
-                <li class="blue-text text-darken-4" style="text-align: center; padding: 5px;"><a href="{% url 'todolist:edit_todo' todo.pk %}">Edit</a></li>
+                <li class="blue-text text-darken-4" style="text-align: center; padding: 5px;"><a class="modal-trigger" data-target="Todoedit{{forloop.counter}}">Edit</a></li>
                     <li class="divider" tabindex="-1"></li>
                 <li class="blue-text text-darken-4" style="text-align: center; padding: 5px;"><a href="{% url 'todolist:delete_todo' todo.pk %}">Delete</a></li>
                 </ul>
@@ -90,6 +91,7 @@
         <br/>
             <a href="{% url 'todolist:new_todo' todo_list.pk %}" class="btn-floating btn-small waves-effect waves-light green"><i class="material-icons">add</i></a>
             <br/><br/>
+        <span class="blue-grey-text text-lighten-5">Date created: {{todo_list.date_created}}</span>
     </fieldset>
     <!-- List delete modal -->
     <div id="listdelete{{forloop.counter}}" class="modal">
@@ -101,6 +103,12 @@
         <a class="modal-close right waves-effect waves-green btn-flat">No, remain it!</a>
     </div>
   </div>
+    <!-- Todo delete modal -->
+    <div id="Tododelete{{forloop.counter}}" class="modal">
+        <div class="modal-content">
+
+        </div>
+    </div>
     {% endfor %}
     {% else %}
     <h3 class="blue-grey-text text-lighten-5 center-align">You have no lists</h3>
