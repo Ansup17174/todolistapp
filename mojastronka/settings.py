@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'django_extensions',
 
 ]
 
@@ -122,11 +123,3 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL='/'
-AUTH_USER_MODEL = 'todolist.CustomUser'
-
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'jakubkoszarny0@gmail.com'
-EMAIL_HOST_PASSWORD = 'tasitasi2!'
-EMAIL_PORT = 587
-PASSWORD_RESET_TIMEOUT_DAYS = 2
